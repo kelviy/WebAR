@@ -10,7 +10,7 @@
     <a-scene
       embedded
       arjs="sourceType: webcam; debugUIEnabled: false; trackingMethod: best;"
-      renderer="antialias: true; precision: highp;"
+      renderer="antialias: true; logarithmicDepthBuffer: true; precision: highp;"
       vr-mode-ui="enabled: false"
     >
       <a-assets>
@@ -32,15 +32,15 @@
         <a-text value="Click on the buttons :) -->" position="-0.5 0 3.2" side="double" font="https://cdn.aframe.io/fonts/Aileron-Semibold.fnt" color="black" rotation="-90 0 0" align="center" scale="2 2 2"></a-text>
 
         <!-- GitHub Button -->
-        <a-plane id="githubBtn" transparent="true" class="clickable" width="1" height="0.3" color="#24292e" opacity="0.8" rotation="-90 0 0" position="3 0 1.5"></a-plane>
+        <a-plane id="githubBtn" transparent="true" class="clickable" width="0.3" height="0.3" color="#24292e" opacity="0.8" rotation="-90 0 0" position="2.5 0 1.6"></a-plane>
         <a-text value="GitHub" side="double" align="center" color="#fff" width="1" rotation="-90 0 0" scale="4 4 4" position="3 0.5 1.5"></a-text>
 
         <!-- Email Button -->
-        <a-plane id="emailBtn" transparent="true" class="clickable" width="1" height="0.3" color="#c71610" opacity="0.8" rotation="-90 0 0" position="3 0 2"></a-plane>
+        <a-plane id="emailBtn" transparent="true" class="clickable" width="0.3" height="0.3" color="#c71610" opacity="0.8" rotation="-90 0 0" position="2.5 0 2"></a-plane>
         <a-text value="Email" side="double" align="center" color="#fff" width="1" rotation="-90 0 0" scale="4 4 4" position="3 0.5 2"></a-text>
 
         <!-- LinkedIn Button -->
-        <a-plane id="linkedinBtn" transparent="true" class="clickable" width="1" height="0.3" color="#0a66c2" opacity="0.8" rotation="-90 0 0" position="3 0 2.5"></a-plane>
+        <a-plane id="linkedinBtn" transparent="true" class="clickable" width="0.3" height="0.3" color="#0a66c2" opacity="0.8" rotation="-90 0 0" position="2.5 0 2.5"></a-plane>
         <a-text value="LinkedIn" side="double" align="center" color="#fff" width="1" rotation="-90 0 0" scale="4 4 4" position="3 0.5 2.5"></a-text>
       </a-marker>
 
