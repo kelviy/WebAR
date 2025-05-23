@@ -4,48 +4,6 @@
     <meta charset="utf-8">
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
-    <script>
-      // Scripts to help with 3D model texture flickering issues
-      // Mipmap & Anisotropy Fix Component
-      AFRAME.registerComponent('fix-texture-filters', {
-        init() {
-          this.el.addEventListener('model-loaded', evt => {
-            const model = evt.detail.model;
-            const renderer = this.el.sceneEl.renderer;
-            const maxAniso = renderer.capabilities.getMaxAnisotropy();
-            model.traverse(node => {
-              if (node.isMesh && node.material.map) {
-                const map = node.material.map;
-                map.generateMipmaps = true;
-                map.minFilter = THREE.LinearMipmapLinearFilter;
-                map.magFilter = THREE.LinearFilter;
-                map.wrapS = map.wrapT = THREE.ClampToEdgeWrapping;
-                map.anisotropy = maxAniso;
-                map.needsUpdate = true;
-              }
-            });
-          });
-        }
-      });
-
-      // Polygon Offset (Z-Fighting) Fix Component
-      AFRAME.registerComponent('fix-zfight', {
-        init() {
-          this.el.addEventListener('model-loaded', evt => {
-            evt.detail.model.traverse(node => {
-              if (node.isMesh) {
-                const mat = node.material;
-                mat.polygonOffset = true;
-                mat.polygonOffsetFactor = 1.0;
-                mat.polygonOffsetUnits = 1.0;
-                mat.depthTest = true;
-                mat.needsUpdate = true;
-              }
-            });
-          });
-        }
-      });
-    </script>
   </head>
 
   <body style="margin:0; overflow:hidden;">
@@ -60,11 +18,8 @@
       </a-assets>
 
       <a-marker preset="hiro">
-        <!-- Apply fix-texture-filters -->
         <a-entity
           gltf-model="#robotModel"
-          fix-texture-filters
-          fix-zfight
           scale="0.3 0.3 0.3"
           rotation="-90 0 0"
           position="4 0 0.5"
