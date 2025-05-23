@@ -4,52 +4,51 @@
     <meta charset="utf-8">
     <!-- A-Frame core (includes Three.js) -->
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
-    <!-- AR.js for A-Frame -->
+    <!-- AR.js for A-Frame marker tracking -->
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
   </head>
 
   <body style="margin:0; overflow:hidden;">
-    <!-- Full AR.js configuration with smoothing & high-res source -->
     <a-scene
       embedded
-      vr-mode-ui="enabled: false"
-      renderer="antialias: true; logarithmicDepthBuffer: true; precision: highp;"
       arjs="
         sourceType: webcam;
         debugUIEnabled: false;
         trackingMethod: best;
-        smooth: true;
-        smoothCount: 10;
-        smoothTolerance: 0.01;
-        smoothThreshold: 5;
-        sourceWidth: 1280;
+        smooth: true;            /* enable pose smoothing */
+        smoothCount: 100;         /* average last 10 frames */
+        smoothTolerance: 0.5;   /* ignore movement < 1 cm */
+        smoothThreshold: 5;      /* require 5 frames before updating */
+        sourceWidth: 1280;       /* optional: higher‐res video */
         sourceHeight: 960;
         displayWidth: 1280;
         displayHeight: 960;
       "
+      renderer="antialias: true; precision: highp;"
+      vr-mode-ui="enabled: false"
     >
       <a-assets>
-        <!-- Your GLTF model asset -->
-        <a-asset-item id="robotModel" src="./assets/flying_robot/scene.gltf"></a-asset-item>
+        <a-asset-item 
+          id="robotModel" 
+          src="./assets/flying_robot/scene.gltf">
+        </a-asset-item>
       </a-assets>
 
-      <!-- Hiro marker: all content here follows the marker’s pose -->
       <a-marker preset="hiro">
-
-        <!-- 1. 3D model with built-in fixes & animations -->
+        <!-- 3D model with fixes & smooth animation -->
         <a-entity
           gltf-model="#robotModel"
           fix-texture-filters
           fix-zfight
           scale="0.3 0.3 0.3"
           rotation="-90 0 0"
-          position="0 0 0"
+          position="4 0 0.5"
           animation__pts="property: position; from: 3 2 -1; to: -3 2 3; dur: 1000; dir: alternate; loop: true"
           animation__spin="property: rotation; from: -90 0 0; to: 0 360 90; dur: 3000; easing: linear; dir: alternate; loop: true"
         ></a-entity>
 
-        <!-- 2. Text overlays -->
-        <a-text
+        <!-- Text content -->
+        <a-text 
           value="Hi, I'm Kelvin! Nice to meet you!!"
           position="-0.5 0 -1.5"
           rotation="-90 0 0"
@@ -59,7 +58,7 @@
           font="https://cdn.aframe.io/fonts/Aileron-Semibold.fnt"
           color="black"
         ></a-text>
-        <a-text
+        <a-text 
           value="Click on the buttons :) -->"
           position="-0.5 0 3.2"
           rotation="-90 0 0"
@@ -70,7 +69,7 @@
           color="black"
         ></a-text>
 
-        <!-- 3. Interactive buttons -->
+        <!-- GitHub Button -->
         <a-plane
           id="githubBtn"
           class="clickable"
@@ -81,7 +80,7 @@
           rotation="-90 0 0"
           position="3 0 1.5"
         ></a-plane>
-        <a-text
+        <a-text 
           value="GitHub"
           side="double"
           align="center"
@@ -92,6 +91,7 @@
           position="3 0.5 1.5"
         ></a-text>
 
+        <!-- Email Button -->
         <a-plane
           id="emailBtn"
           class="clickable"
@@ -102,7 +102,7 @@
           rotation="-90 0 0"
           position="3 0 2"
         ></a-plane>
-        <a-text
+        <a-text 
           value="Email"
           side="double"
           align="center"
@@ -113,6 +113,7 @@
           position="3 0.5 2"
         ></a-text>
 
+        <!-- LinkedIn Button -->
         <a-plane
           id="linkedinBtn"
           class="clickable"
@@ -123,7 +124,7 @@
           rotation="-90 0 0"
           position="3 0 2.5"
         ></a-plane>
-        <a-text
+        <a-text 
           value="LinkedIn"
           side="double"
           align="center"
@@ -135,35 +136,23 @@
         ></a-text>
       </a-marker>
 
-      <!-- Camera + cursor for clicking -->
+      <!-- Camera + click cursor -->
       <a-entity camera look-controls>
         <a-cursor raycaster="objects: .clickable" fuse="false"></a-cursor>
       </a-entity>
     </a-scene>
 
-    <!-- Camera-reset script to eliminate AR.js bug jitter :contentReference[oaicite:3]{index=3} -->
     <script>
-      document
-        .querySelector("a-scene")
-        .addEventListener("loaded", function () {
-          this.camera = new THREE.PerspectiveCamera();
+      document.addEventListener('DOMContentLoaded', () => {
+        document.querySelector('#githubBtn').addEventListener('click', () => {
+          window.open('https://www.github.com/kelviy', '_blank');
         });
-
-      document.addEventListener("DOMContentLoaded", () => {
-        document.getElementById("githubBtn").addEventListener("click", () => {
-          window.open("https://www.github.com/kelviy", "_blank");
+        document.querySelector('#emailBtn').addEventListener('click', () => {
+          window.location.href = 'mailto:kelvin.wei@hotmail.com';
         });
-        document.getElementById("emailBtn").addEventListener("click", () => {
-          window.location.href = "mailto:kelvin.wei@hotmail.com";
+        document.querySelector('#linkedinBtn').addEventListener('click', () => {
+          window.open('https://www.linkedin.com/in/kelvin-wei-4b2385227', '_blank');
         });
-        document
-          .getElementById("linkedinBtn")
-          .addEventListener("click", () => {
-            window.open(
-              "https://www.linkedin.com/in/kelvin-wei-4b2385227",
-              "_blank"
-            );
-          });
       });
     </script>
   </body>
