@@ -10,7 +10,7 @@
   <body style="margin:0; overflow:hidden;">
     <a-scene
       embedded arjs 
-      renderer="antialias: true; logarithmicDepthBuffer: true; precision: highp;"
+      renderer="antialias: true; logarithmicDepthBuffer: true;"
       vr-mode-ui="enabled: false"
     >
       <a-assets>
@@ -28,12 +28,13 @@
           animation__spin="property: rotation; from: -90 0 0; to: 0 360 90; dur: 3000; easing: linear; dir: alternate; loop: true">
         </a-entity>
 
-        <a-text value="Hi, I'm Kelvin! Nice to meet you!!" position="-0.5 0 -1.5" font="https://cdn.aframe.io/fonts/Aileron-Semibold.fnt" color="black" rotation="-90 0 0" align="center" scale="2 2 2"> </a-text>
-        <a-text value="Click on the buttons :) -->" position="-0.5 0 3.2" font="https://cdn.aframe.io/fonts/Aileron-Semibold.fnt" color="black" rotation="-90 0 0" align="center" scale="2 2 2"> </a-text>
+        <a-text value="Hi, I'm Kelvin! Nice to meet you!!" position="-0.5 0 -1.5" side="double" font="https://cdn.aframe.io/fonts/Aileron-Semibold.fnt" color="black" rotation="-90 0 0" align="center" scale="2 2 2"> </a-text>
+        <a-text value="Click on the buttons :) -->" position="-0.5 0 3.2" side="double" font="https://cdn.aframe.io/fonts/Aileron-Semibold.fnt" color="black" rotation="-90 0 0" align="center" scale="2 2 2"> </a-text>
         <!-- ===== Overlay Buttons on the Card Face ===== -->
         <!-- GitHub Button -->
         <a-plane
           id="githubBtn"
+          transparent="true"
           class="clickable"
           width="1" height="0.3"
           color="#24292e"
@@ -43,6 +44,7 @@
         ></a-plane>
         <a-text
           value="GitHub"
+          side="double"
           align="center"
           color="#fff"
           width="1"
@@ -54,6 +56,7 @@
         <!-- Email Button -->
         <a-plane
           id="emailBtn"
+          transparent="true"
           class="clickable"
           width="1" height="0.3"
           color="#c71610"
@@ -63,6 +66,7 @@
         ></a-plane>
         <a-text
           value="Email"
+          side="double"
           align="center"
           color="#fff"
           width="1"
@@ -74,6 +78,7 @@
         <!-- LinkedIn Button -->
         <a-plane
           id="linkedinBtn"
+          transparent="true"
           class="clickable"
           width="1" height="0.3"
           color="#0a66c2"
@@ -83,6 +88,7 @@
         ></a-plane>
         <a-text
           value="LinkedIn"
+          side="double"
           align="center"
           color="#fff"
           width="1"
