@@ -13,19 +13,8 @@
       renderer="antialias: true; logarithmicDepthBuffer: true; precision: highp;"
       vr-mode-ui="enabled: false"
     >
-      <a-assets>
-        <a-asset-item id="robotModel" src="./assets/flying_robot/scene.gltf"></a-asset-item>
-      </a-assets>
 
       <a-marker preset="hiro">
-        <a-entity
-          gltf-model="#robotModel"
-          scale="0.3 0.3 0.3"
-          rotation="-90 0 0"
-          position="4 0 0.5"
-          animation__pts="property: position; from: 3 2 -1;   to: -3 2 3;   dur: 1000; dir: alternate; loop: true"
-          animation__spin="property: rotation;  from: -90 0 0; to: 0 360 90;   dur: 3000; easing: linear; dir: alternate; loop: true">
-        </a-entity>
 
         <!-- Text content -->
         <a-text value="Hi, I'm Kelvin! Nice to meet you!!" position="-0.5 0 -1.5" side="double" font="https://cdn.aframe.io/fonts/Aileron-Semibold.fnt" color="black" rotation="-90 0 0" align="center" scale="2 2 2"></a-text>
