@@ -2,17 +2,18 @@
 <html>
   <head>
     <meta charset="utf-8">
+    <!-- A-Frame core and AR.js marker support -->
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
     <script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar.js"></script>
+
     <script>
-      // Scripts to help with 3D model texture flickering issues
-      // Mipmap & Anisotropy Fix Component
+      // 1) Mipmap & Anisotropy Fix (as before)
       AFRAME.registerComponent('fix-texture-filters', {
         init() {
           this.el.addEventListener('model-loaded', evt => {
             const model = evt.detail.model;
             const renderer = this.el.sceneEl.renderer;
-            const maxAniso = renderer.capabilities.getMaxAnisotropy();
+            const maxAniso = renderer.capabilities.getMaxAnisotropy() || 4;
             model.traverse(node => {
               if (node.isMesh && node.material.map) {
                 const map = node.material.map;
@@ -28,7 +29,7 @@
         }
       });
 
-      // Polygon Offset (Z-Fighting) Fix Component
+      // 2) Stronger Polygon-Offset to squash Z-fighting
       AFRAME.registerComponent('fix-zfight', {
         init() {
           this.el.addEventListener('model-loaded', evt => {
@@ -51,15 +52,17 @@
     <a-scene
       embedded
       arjs="sourceType: webcam; debugUIEnabled: false; trackingMethod: best;"
-      renderer="antialias: true; precision: highp;"
+      renderer="antialias: true; logarithmicDepthBuffer: true; sortObjects: false;"
       vr-mode-ui="enabled: false"
     >
       <a-assets>
         <a-asset-item id="robotModel" src="./assets/flying_robot/scene.gltf"></a-asset-item>
       </a-assets>
 
+      <!-- 3) Tweak the camera near/far for better depth precision -->
+      <a-entity camera="near: 0.5; far: 1000;"></a-entity>
+
       <a-marker preset="hiro">
-        <!-- Apply fix-texture-filters -->
         <a-entity
           gltf-model="#robotModel"
           fix-texture-filters
@@ -67,31 +70,85 @@
           scale="0.5 0.5 0.5"
           rotation="-90 0 0"
           position="3 0 -3"
-          animation__pts="property: position; from: 3 0 -3; to: -3 3 3; dur: 1000; dir: alternate; loop: true"
-          animation__spin="property: rotation; from: -90 0 0; to: 0 360 90; dur: 3000; easing: linear; dir: alternate; loop: true">
+          animation__pts="property: position; from: 3 0 -3;   to: -3 3 3;   dur: 1000; dir: alternate; loop: true"
+          animation__spin="property: rotation;  from: -90 0 0; to: 0 360 90;   dur: 3000; easing: linear; dir: alternate; loop: true">
         </a-entity>
 
-        <!-- Text content -->
-        <a-text value="Hi, I'm Kelvin! Nice to meet you!!" position="-0.5 0 -1.5" side="double" font="https://cdn.aframe.io/fonts/Aileron-Semibold.fnt" color="black" rotation="-90 0 0" align="center" scale="2 2 2"></a-text>
-        <a-text value="Click on the buttons :) -->" position="-0.5 0 3.2" side="double" font="https://cdn.aframe.io/fonts/Aileron-Semibold.fnt" color="black" rotation="-90 0 0" align="center" scale="2 2 2"></a-text>
+        <!-- Static Text -->
+        <a-text
+          value="Hi, I'm Kelvin! Nice to meet you!!"
+          position="-0.5 0 -1.5"
+          rotation="-90 0 0"
+          scale="2 2 2"
+          side="double"
+          font="https://cdn.aframe.io/fonts/Aileron-Semibold.fnt"
+          color="black"
+          align="center">
+        </a-text>
 
-        <!-- GitHub Button -->
-        <a-plane id="githubBtn" transparent="true" class="clickable" width="1" height="0.3" color="#24292e" opacity="0.8" rotation="-90 0 0" position="3 0 1.5"></a-plane>
-        <a-text value="GitHub" side="double" align="center" color="#fff" width="1" rotation="-90 0 0" scale="4 4 4" position="3 0.1 1.5"></a-text>
+        <a-text
+          value="Click on the buttons :) -->"
+          position="-0.5 0 3.2"
+          rotation="-90 0 0"
+          scale="2 2 2"
+          side="double"
+          font="https://cdn.aframe.io/fonts/Aileron-Semibold.fnt"
+          color="black"
+          align="center">
+        </a-text>
 
-        <!-- Email Button -->
-        <a-plane id="emailBtn" transparent="true" class="clickable" width="1" height="0.3" color="#c71610" opacity="0.8" rotation="-90 0 0" position="3 0 2"></a-plane>
-        <a-text value="Email" side="double" align="center" color="#fff" width="1" rotation="-90 0 0" scale="4 4 4" position="3 0.1 2"></a-text>
+        <!-- Buttons -->
+        <a-plane
+          id="githubBtn" class="clickable"
+          width="1" height="0.3"
+          color="#24292e" opacity="0.8" transparent="true"
+          rotation="-90 0 0"
+          position="3 0 1.5">
+        </a-plane>
+        <a-text
+          value="GitHub"
+          position="3 0.1 1.5"
+          rotation="-90 0 0"
+          scale="4 4 4"
+          side="double"
+          align="center"
+          color="#fff">
+        </a-text>
 
-        <!-- LinkedIn Button -->
-        <a-plane id="linkedinBtn" transparent="true" class="clickable" width="1" height="0.3" color="#0a66c2" opacity="0.8" rotation="-90 0 0" position="3 0 2.5"></a-plane>
-        <a-text value="LinkedIn" side="double" align="center" color="#fff" width="1" rotation="-90 0 0" scale="4 4 4" position="3 0.1 2.5"></a-text>
+        <a-plane
+          id="emailBtn" class="clickable"
+          width="1" height="0.3"
+          color="#c71610" opacity="0.8" transparent="true"
+          rotation="-90 0 0"
+          position="3 0 2">
+        </a-plane>
+        <a-text
+          value="Email"
+          position="3 0.1 2"
+          rotation="-90 0 0"
+          scale="4 4 4"
+          side="double"
+          align="center"
+          color="#fff">
+        </a-text>
+
+        <a-plane
+          id="linkedinBtn" class="clickable"
+          width="1" height="0.3"
+          color="#0a66c2" opacity="0.8" transparent="true"
+          rotation="-90 0 0"
+          position="3 0 2.5">
+        </a-plane>
+        <a-text
+          value="LinkedIn"
+          position="3 0.1 2.5"
+          rotation="-90 0 0"
+          scale="4 4 4"
+          side="double"
+          align="center"
+          color="#fff">
+        </a-text>
       </a-marker>
-
-      <!-- Camera -->
-      <a-entity camera look-controls>
-        <a-cursor raycaster="objects: .clickable" fuse="false"></a-cursor>
-      </a-entity>
     </a-scene>
 
     <script>
